@@ -38,6 +38,8 @@ var displayCheckAPIAlert = true;
 /* Create a bool for checking the API Connection when a user presses the button */
 var isAPIConnectionActive = null;
 
+var showInfo = false;
+
 /* CORS */
 
 
@@ -62,7 +64,7 @@ export default class App extends Component {
         height: 500,
       },
       currentBusLocations:[],
-      currentBusDetails: []
+      currentBusName: []
     }
   };
 
@@ -114,6 +116,7 @@ export default class App extends Component {
     if (isAPIConnectionActive == true) {
 
       console.log('Connection is active');
+      <div>Hello</div>
 
 
     } else {
@@ -127,10 +130,6 @@ export default class App extends Component {
   /* This function fetches the bus location from the translink API and gets the data back in JSON */
   fetchBusLocation() {
 
-    fetch('http://api.translink.ca/rttiapi/v1/buses?apiKey=aqkEXwYsmjIr2Ioy0E6v', {
-          mode: 'no-cors',
-          method: "GET",
-        })
 
       request({
         /* Pass in the Translink API URL */
@@ -166,35 +165,56 @@ export default class App extends Component {
 
   }
 
+  getBusStates() {
+
+
+    fetch('http://api.translink.ca/rttiapi/v1/buses?apiKey=aqkEXwYsmjIr2Ioy0E6v')
+    .then(results => {
+      return results.json();
+    }).then(data => {
+    let details = data.results.map((busdetails) => {
+      <div key={busdetails.results}>
+      </div>
+
+    })
+    this.setState({details: details});
+    console.log('Bus States', this.state.details);
+  })
+
+  }
+
 
   parseBusJSONCoordinates(vancouverBusLocation) {
-    let currentBusLocationArray = vancouverBusLocation.map((theBus) => ({lat: theBus.Latitude, lon: theBus.Longitude}));
+    let currentBusLocationArray = vancouverBusLocation.map((theBus) => ({lat: theBus.Latitude, lon: theBus.Longitude, Destination: theBus.Destination, Direction: theBus.Direction}));
     this.setState({currentBusLocations: currentBusLocationArray});
     console.log('Bus Positions',currentBusLocationArray)
 
   }
 
+
+
   /* Get the currrent location of the user and display the location on a map */
   getCurrentLocation() {
 
-    var map = new ReactMapboxMapGL.Map({attributionControl: false})
-      .addControl(new ReactMapboxMapGL.AttributionControl({
-          compact: true
-      }));
+    {this.state.currentBusLocations.map ((position, index) => (
+      <div> />
+      {position.Destination}
+      </div>
+    ))}
 
   }
 
   /* The componentDidMount method gets called once the component is mounted to the DOM */
   /* Use Component did Mount for fetching the API data and calling methods when the web app loads */
+  /* --------------------------------------- */
   componentDidMount() {
-
 
     /* Show the welcome alert */
     this.showWelcomeAlert();
     //this.getBusPoints();
 
+    /* this.getBusStates() */
     /* Call the fetchBusLocation function every defined amount of seconds */
-
     this.timer = setInterval(()=> this.fetchBusLocation(), 1000)
 
     /* Show the welcome alert */
@@ -206,7 +226,9 @@ export default class App extends Component {
   }
 
 
+
   /* The componentWillUnmount method gets called right before the component is unloaded from the DOM */
+  /* --------------------------------------- */
   componentWillUnmount() {
 
     /* Set the window size */
@@ -229,10 +251,16 @@ export default class App extends Component {
   /* on mouse hover event */
   onMouseHover = event => {
 
+
   };
+
+  state = { showing: true };
+
 
   /* Everything in the React render function will be rendered to the view */
   render() {
+
+
 
     const {viewport, mapStyle} = this.state;
 
@@ -267,11 +295,16 @@ export default class App extends Component {
       </Marker>
 
       {/* Parse the JSON and get the longitude and latitude and display on the map */}
-      {this.state.currentBusLocations.map((position, index) => (
-        <Marker latitude={position.lat} longitude={position.lon} key={index}>
-        <div> <MaterialIcon icon="directions_bus" size={25} color="#fff"/>  </div>
+      {this.state.currentBusLocations.map ((busData, index) => (
+        <Marker latitude={busData.lat} longitude={busData.lon} key={index}>
+        <div> <MaterialIcon icon="directions_bus" size={25} color="#fff"/>
+        {busData.Destination}
+        </div>
         </Marker>
       ))}
+
+
+
 
 
       {/* Load in the react Options Component */}
