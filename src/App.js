@@ -15,6 +15,7 @@ import {defaultMapStyle, dataLayer} from './map-style.js';
 //import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import ReactLogo from './logo.svg';
 import location from './currentcity.png';
+import TransLinkLogo from './TransLinkLogo.png';
 
 /* import Material Icons for the bus icon */
 //import MaterialIcon from 'react-google-material-icons'
@@ -237,7 +238,9 @@ export default class App extends Component {
 
     return (
       <div>
-      <center>  <h2>TransLink Live</h2>
+      <center>
+       <img src={TransLinkLogo}/>
+       <h2>TransLink Connector</h2>
       <div>
       {/* React Welcome Alert Popup */}
       <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
