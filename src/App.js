@@ -3,7 +3,7 @@ import {render} from 'react-dom';
 import Options from './options';
 import Footer from './footer';
 import Request from 'request';
-import MapGL, {Marker} from 'react-map-gl';
+import ReactMapboxMapGL, {Marker} from 'react-map-gl';
 /* Import React Superagent */
 import Superagent from 'superagent';
 import AlertContainer from 'react-alert'
@@ -15,8 +15,11 @@ import {defaultMapStyle, dataLayer} from './map-style.js';
 //import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import ReactLogo from './logo.svg';
 import location from './currentcity.png';
+
 /* import Material Icons for the bus icon */
-import MaterialIcon from 'react-google-material-icons'
+//import MaterialIcon from 'react-google-material-icons'
+import MaterialIcon, {colorPallet} from 'material-icons-react';
+
 
 
 
@@ -34,6 +37,8 @@ var displayCheckAPIAlert = true;
 /* Create a bool for checking the API Connection when a user presses the button */
 var isAPIConnectionActive = null;
 
+/* CORS */
+
 
 /* React App Extends Component */
 export default class App extends Component {
@@ -42,22 +47,23 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    mapStyle: defaultMapStyle,
-    hoveredFeature: null,
-    viewport: {
-      /* Set the latitude and longitude to Vancouver coordinates */
-      latitude: 49.2827,
-      longitude: -123.1207,
-      /* Set the initial map zoom to 12 to see the vancouver area */
-      zoom: 12,
-      bearing: 0,
-      pitch: 0,
-      width: 500,
-      height: 500,
-   },
-   currentBusLocations:[]
-  }
-};
+      mapStyle: defaultMapStyle,
+      hoveredFeature: null,
+      viewport: {
+        /* Set the latitude and longitude to Vancouver coordinates */
+        latitude: 49.2827,
+        longitude: -123.1207,
+        /* Set the initial map zoom to 12 to see the vancouver area */
+        zoom: 12,
+        bearing: 0,
+        pitch: 0,
+        width: 500,
+        height: 500,
+      },
+      currentBusLocations:[],
+      currentBusDetails: []
+    }
+  };
 
   /* React Alert Pop Up Options */
   alertOptions = {
@@ -72,7 +78,7 @@ export default class App extends Component {
     this.msg.show('Welcome to My Translink API Connector built with React.', {
       time: 8000,
       type: 'success',
-      icon: <MaterialIcon icon="tag_faces" size={30} />
+      icon: <MaterialIcon icon="tag_faces" size={30} color="#FF3776" />
     })
   }
 
@@ -80,7 +86,7 @@ export default class App extends Component {
     this.msg.show('The bus icon reflects a buses current location.', {
       time: 8000,
       type: 'success',
-      icon: <MaterialIcon icon="near_me" size={30} />
+      icon: <MaterialIcon icon="near_me" size={30} color="#56D4EA" />
     })
   }
 
@@ -88,7 +94,7 @@ export default class App extends Component {
     this.msg.show('We encountered an error while fetching the data.', {
       time: 5000,
       type: 'success',
-      icon:  <MaterialIcon icon="error_outline" size={30} />
+      icon:  <MaterialIcon icon="error_outline" size={30} color="#FB5F68" />
     })
   }
 
@@ -96,7 +102,7 @@ export default class App extends Component {
     this.msg.show('The Translink API data was recieved', {
       time: 5000,
       type: 'success',
-      icon: <MaterialIcon icon="directions_bus" size={30} />
+      icon: <MaterialIcon icon="directions_bus" size={30} color ="#3748AC" />
     })
   }
 
@@ -120,13 +126,18 @@ export default class App extends Component {
   /* This function fetches the bus location from the translink API and gets the data back in JSON */
   fetchBusLocation() {
 
-    request.get('/api', (req, res) => {
+    fetch('http://api.translink.ca/rttiapi/v1/buses?apiKey=aqkEXwYsmjIr2Ioy0E6v', {
+          mode: 'no-cors',
+          method: "GET",
+        })
+
       request({
         /* Pass in the Translink API URL */
         url: TRANSLINK_LIVE_API_URL,
         method: "GET",
         /* Return JSON data from the Translink API */
         json: true
+
       }, (err, response, body) => {
         if (err || response.statusCode !== 200) {
           console.log('Problem fetching API Data, please check the API KEY.', err);
@@ -136,7 +147,7 @@ export default class App extends Component {
           isAPIConnectionActive = false;
         } else {
 
-       /* parse the body and get the latitude and longitude */
+          /* parse the body and get the latitude and longitude */
           this.parseBusJSONCoordinates(body);
           console.log('All Bus Details:', body);
 
@@ -150,7 +161,7 @@ export default class App extends Component {
           }
         }
       });
-    });
+    ;
 
   }
 
@@ -162,9 +173,13 @@ export default class App extends Component {
 
   }
 
-/* Get the currrent location of the user and display the location on a map */
+  /* Get the currrent location of the user and display the location on a map */
   getCurrentLocation() {
 
+    var map = new ReactMapboxMapGL.Map({attributionControl: false})
+      .addControl(new ReactMapboxMapGL.AttributionControl({
+          compact: true
+      }));
 
   }
 
@@ -172,9 +187,10 @@ export default class App extends Component {
   /* Use Component did Mount for fetching the API data and calling methods when the web app loads */
   componentDidMount() {
 
-        /* Show the welcome alert */
-        this.showWelcomeAlert();
-        //this.getBusPoints();
+
+    /* Show the welcome alert */
+    this.showWelcomeAlert();
+    //this.getBusPoints();
 
     /* Call the fetchBusLocation function every defined amount of seconds */
 
@@ -226,14 +242,15 @@ export default class App extends Component {
       {/* React Welcome Alert Popup */}
       <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
       <Button raised color="accent" onClick={this.checkTranslinkAPIConnection}>Check API Connection</Button>
-      <Button raised color="primary" onClick={this.checkTranslinkAPIConnection}>Get Current Location</Button>
+      {/* Get the current location when button pressed*/}
+      <Button raised color="primary" onClick={this.getCurrentLocation}>Get Current Location</Button>
 
       </div>
       </center>
 
 
       {/* MapBox Map Integration */}
-      <MapGL
+      <ReactMapboxMapGL
       {...viewport}
       mapStyle={mapStyle}
 
@@ -241,23 +258,22 @@ export default class App extends Component {
       mapboxApiAccessToken={MAPBOX_API_TOKEN}
       onHover={this.onMouseHover}>
 
-      {/* Mapbox Markers for the bus locations */}
+      {/* Display the Vancouvers coordinates on a map */}
       <Marker latitude={49.2827} longitude={-123.1207}>
-           <div> <img src={location}/> </div>
-         </Marker>
+      <div> <img src={location}/> </div>
+      </Marker>
 
-         {/* Parse the JSON and get the longitude and latitude and display on the map */}
-
-         {this.state.currentBusLocations.map((position, index) => (
-           <Marker latitude={position.lat} longitude={position.lon} key={index}>
-           <div> <MaterialIcon icon="directions_bus" size={30}/> </div>
-           </Marker>
-         ))}
+      {/* Parse the JSON and get the longitude and latitude and display on the map */}
+      {this.state.currentBusLocations.map((position, index) => (
+        <Marker latitude={position.lat} longitude={position.lon} key={index}>
+        <div> <MaterialIcon icon="directions_bus" size={25} color="#fff"/>  </div>
+        </Marker>
+      ))}
 
 
       {/* Load in the react Options Component */}
       <Options containerComponent={this.props.containerComponent}/>
-      </MapGL>
+      </ReactMapboxMapGL>
 
       {/* Load in the react Webpage Footer Component */}
       <Footer containerComponent={this.props.containerComponent}/>
