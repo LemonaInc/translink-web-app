@@ -8,16 +8,15 @@ body {
   padding: 0;
   font-family: sans-serif;
   font-family: 'Maven Pro', sans-serif;
-  color: #fff;
+  color: #2B2D2D;
   position:fixed;
   background-color: #2B2D2D;
   background-image: linear-gradient(to right, #00E39F, #00C4E1);
 }
 
-/* Create a map border CSS class /*/
-.Map-Border {
-  color: #56D4EA;
 
+.Popup-Color {
+  color: #56D4EA;
 }
 
 .Overlay {

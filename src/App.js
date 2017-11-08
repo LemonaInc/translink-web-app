@@ -17,6 +17,7 @@ import ReactLogo from './logo.svg';
 import location from './currentcity.png';
 import TransLinkLogo from './TransLinkLogo.png';
 
+
 /* import Material Icons for the bus icon */
 //import MaterialIcon from 'react-google-material-icons'
 import MaterialIcon, {colorPallet} from 'material-icons-react';
@@ -64,7 +65,8 @@ export default class App extends Component {
         height: 500,
       },
       currentBusLocations:[],
-      currentBusName: []
+      currentBusName: [],
+      info: "Hello"
     }
   };
 
@@ -256,8 +258,20 @@ export default class App extends Component {
   };
 
 
-  showMarkerDetails() {
+
+  renderPopup() {
+    const {popupInfo} = this.state;
+
+    return popupInfo && (
+      <Popup tipSize={5}
+        anchor="top"
+        longitude={49.2827}
+        latitude={-123.1207}
+        onClose={() => this.setState({popupInfo: null})} >
+      </Popup>
+    );
   }
+
 
 
   /* Everything in the React render function will be rendered to the view */
@@ -276,7 +290,6 @@ export default class App extends Component {
       <Button raised color="accent" onClick={this.checkTranslinkAPIConnection}>Check API Connection</Button>
       {/* Get the current location when button pressed*/}
       <Button raised color="primary" onClick={this.getCurrentLocation}>Get Current Location</Button>
-
       </div>
       </center>
 
@@ -295,12 +308,21 @@ export default class App extends Component {
       <div> <img src={location}/> </div>
       </Marker>
 
+
+      {this.state.currentBusLocations.map ((busData, index) => (
+      <Popup latitude={busData.lat} longitude={busData.lon} closeButton={true} closeOnClick={false} anchor="top">
+         <div> {busData.Destination} </div>
+       </Popup>
+        ))}
+
       {/* Parse the JSON and get the longitude and latitude and display on the map */}
       {this.state.currentBusLocations.map ((busData, index) => (
-        <Marker latitude={busData.lat} longitude={busData.lon} key={index}>
-        <div> <MaterialIcon icon="directions_bus" size={25} color="#fff"/>
-        <div className="station"><span>{busData.Destination}</span></div>
+        <Marker tipSize={5}
+        anchor="top"
+        latitude={busData.lat} longitude={busData.lon} key={index}>
+        <div> <MaterialIcon icon="directions_bus" size={25} color="#fff"onClick={() => this.setState({popupInfo: busData})}/>
         </div>
+        <busdata info={busData.Destination} />
         </Marker>
       ))}
 
