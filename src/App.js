@@ -23,8 +23,6 @@ import TransLinkLogo from './TransLinkLogo.png';
 import MaterialIcon, {colorPallet} from 'material-icons-react';
 
 
-
-
 /* Define Constants */
 const DEFAULT_QUERY = 'redux';
 const request = require('request');
@@ -66,7 +64,7 @@ export default class App extends Component {
       },
       currentBusLocations:[],
       currentBusName: [],
-      info: "Hello"
+      popupInfo: null
     }
   };
 
@@ -118,7 +116,6 @@ export default class App extends Component {
     if (isAPIConnectionActive == true) {
 
       console.log('Connection is active');
-      <div>Hello</div>
 
 
     } else {
@@ -259,18 +256,20 @@ export default class App extends Component {
 
 
 
-  renderPopup() {
-    const {popupInfo} = this.state;
+  putPop() {
 
-    return popupInfo && (
+    const {putPop} = this.state;
+
+      return putPop && (
       <Popup tipSize={5}
         anchor="top"
         longitude={49.2827}
-        latitude={-123.1207}
-        onClose={() => this.setState({popupInfo: null})} >
+        latitude={-123.1207}>
       </Popup>
     );
   }
+
+
 
 
 
@@ -309,22 +308,15 @@ export default class App extends Component {
       </Marker>
 
 
-      {this.state.currentBusLocations.map ((busData, index) => (
-      <Popup latitude={busData.lat} longitude={busData.lon} closeButton={true} closeOnClick={false} anchor="top">
-         <div> {busData.Destination} </div>
-       </Popup>
-        ))}
-
       {/* Parse the JSON and get the longitude and latitude and display on the map */}
+
       {this.state.currentBusLocations.map ((busData, index) => (
-        <Marker tipSize={5}
-        anchor="top"
-        latitude={busData.lat} longitude={busData.lon} key={index}>
-        <div> <MaterialIcon icon="directions_bus" size={25} color="#fff"onClick={() => this.setState({popupInfo: busData})}/>
-        </div>
-        <busdata info={busData.Destination} />
-        </Marker>
-      ))}
+     <Popup latitude={busData.lat} longitude={busData.lon} closeButton={false} closeOnClick={false} anchor="top">
+    <center> <MaterialIcon icon="directions_bus" size={25} color="#56D4EA"/> </center>
+       <div> {busData.Destination} </div>
+      </Popup>
+     ))}
+
 
 
       {/* Load in the react Options Component */}
