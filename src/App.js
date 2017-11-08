@@ -3,7 +3,7 @@ import {render} from 'react-dom';
 import Options from './options';
 import Footer from './footer';
 import Request from 'request';
-import ReactMapboxMapGL, {Marker} from 'react-map-gl';
+import ReactMapboxMapGL, {Marker, Popup, NavigationControl} from 'react-map-gl';
 /* Import React Superagent */
 import Superagent from 'superagent';
 import AlertContainer from 'react-alert'
@@ -94,7 +94,7 @@ export default class App extends Component {
   }
 
   showErrorAlert = () => {
-    this.msg.show('We encountered an error while fetching the data.', {
+    this.msg.show('We encountered an error while fetching the data. Please make sure CORS is enabled', {
       time: 5000,
       type: 'success',
       icon:  <MaterialIcon icon="error_outline" size={30} color="#FB5F68" />
@@ -235,6 +235,7 @@ export default class App extends Component {
     window.removeEventListener('resize', this.windowSize);
   }
 
+  /* Define the Window Size */
   windowSize = () => {
     this.setState({
       viewport: {
@@ -254,13 +255,13 @@ export default class App extends Component {
 
   };
 
-  state = { showing: true };
+
+  showMarkerDetails() {
+  }
 
 
   /* Everything in the React render function will be rendered to the view */
   render() {
-
-
 
     const {viewport, mapStyle} = this.state;
 
@@ -298,13 +299,10 @@ export default class App extends Component {
       {this.state.currentBusLocations.map ((busData, index) => (
         <Marker latitude={busData.lat} longitude={busData.lon} key={index}>
         <div> <MaterialIcon icon="directions_bus" size={25} color="#fff"/>
-        {busData.Destination}
+        <div className="station"><span>{busData.Destination}</span></div>
         </div>
         </Marker>
       ))}
-
-
-
 
 
       {/* Load in the react Options Component */}
