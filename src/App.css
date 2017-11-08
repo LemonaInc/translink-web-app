@@ -22,3 +22,49 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
+/* ------------------------------------------------------------------------------------------------------------------------*/
+/*-- In order to create this effect for location pin I used this tutoroal from here: http://bluefaqs.com/2016/02/how-to-animate-a-map-location-marker-with-css/
+The author's name of this tutorial is Shawn Ramsey. -----------------------------------*/
+
+/* Make the marker pin pulsate */
+@keyframes pulsate {
+    0% {
+    transform: scale(0.1);
+    opacity: 0;
+    }
+    50% {
+    opacity: 1;
+    }
+    100% {
+    transform: scale(1.2);
+    opacity: 0;
+    }
+}
+
+
+/* Center the marker class */
+.marker {
+    position:fixed;
+}
+
+/* Create the pin class */
+
+
+
+/* Create the pin effect class */
+
+.pin-effect {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  background: #56D4EA;
+  border: 2px solid #FFF;
+  border-radius: 50%;
+  z-index: 1000;
+    animation: pulsate 2400ms ease-out infinite;
+     z-index: 1000;
+}

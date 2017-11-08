@@ -16,6 +16,10 @@ import {defaultMapStyle, dataLayer} from './map-style.js';
 import Location from './location.gif';
 import BusTrackerLogo from './BusTrackerLogo.png';
 import ReactLoading from 'react-loading';
+import AppCSS from './App.css';
+const Spacer = require('react-spacer')
+import Center from 'react-center';
+
 
 
 /* import Material Icons for the bus icon */
@@ -274,18 +278,40 @@ export default class App extends Component {
     const {viewport, mapStyle} = this.state;
 
     return (
+
       <div>
-      <center>
+      <Center>
       <img src={BusTrackerLogo}/>
-      <h2></h2>
       <div>
+
       {/* React Welcome Alert Popup */}
       <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
-      <Button raised color="accent" onClick={this.checkTranslinkAPIConnection}>Check API Connection</Button>
-      {/* Get the current location when button pressed*/}
-      <Button raised color="primary" onClick={this.getCurrentLocation}>Get Current Location</Button>
       </div>
-      </center>
+      </Center>
+      {/* ______________________ */}
+
+
+      <Spacer height='50px' />
+
+
+       {/* React Material Design Buttons */}
+       <Center>
+
+       <Button raised color="accent" onClick={this.checkTranslinkAPIConnection}>Check API Connection</Button>
+       {/* Get the current location when button pressed*/}
+       <Spacer width='50px' />
+
+       {/* CSS Animating Location Marker*/}
+       <div className="marker">
+          <div className="pin-effect"></div>
+        </div>
+       {/* ______________________ */}
+
+       <Button raised color="primary" onClick={this.getCurrentLocation}>Get Current Location</Button>
+       </Center>
+      {/* ______________________ */}
+
+       <Spacer height='50px' />
 
 
       {/* MapBox Map Integration */}
@@ -300,7 +326,7 @@ export default class App extends Component {
       {/* Display the Vancouvers coordinates on a map */}
       <Popup latitude={49.2827} longitude={-123.1207}>
       <div>Downtown</div>
-      <div> <ReactLoading type="balls" color="#56D4EA" /> </div>
+      <ReactLoading type="balls" color="#56D4EA" />
       </Popup>
 
 
@@ -314,7 +340,6 @@ export default class App extends Component {
      </center>
      </Popup>
      ))}
-
 
 
       {/* Load in the react Options Component */}
