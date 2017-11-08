@@ -147,8 +147,8 @@ export default class App extends Component {
         } else {
 
           /* parse the body and get the latitude and longitude */
-          this.parseBusJSONCoordinates(body);
-          console.log('All Bus Details:', body);
+          this.parseBusJSONData(body);
+          /* console.log('All Bus Details:', body); */
 
           /* Show the sucess alert if the data is recived from the Translink */
           /* Set the isAPIConnectionActive to true */
@@ -164,9 +164,7 @@ export default class App extends Component {
 
   }
 
-  getBusStates() {
-
-
+  /* getBusStates() {
     fetch('http://api.translink.ca/rttiapi/v1/buses?apiKey=aqkEXwYsmjIr2Ioy0E6v')
     .then(results => {
       return results.json();
@@ -180,16 +178,15 @@ export default class App extends Component {
     console.log('Bus States', this.state.details);
   })
 
-  }
+} */
 
+/* Parse the JSON data and add Longitude, Latitude, Direction and Destination to an array */
+  parseBusJSONData(vancouverBusLocation) {
 
-  parseBusJSONCoordinates(vancouverBusLocation) {
     let currentBusLocationArray = vancouverBusLocation.map((theBus) => ({lat: theBus.Latitude, lon: theBus.Longitude, Destination: theBus.Destination, Direction: theBus.Direction}));
     this.setState({currentBusLocations: currentBusLocationArray});
-    console.log('Bus Positions',currentBusLocationArray)
-
+  /*  console.log('Bus Positions',currentBusLocationArray) */
   }
-
 
 
   /* Get the currrent location of the user and display the location on a map */
@@ -268,8 +265,6 @@ export default class App extends Component {
       </Popup>
     );
   }
-
-
 
 
 
