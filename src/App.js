@@ -13,9 +13,9 @@ import {fromJS} from 'immutable';
 /* Import React MapBox Functions */
 import {defaultMapStyle, dataLayer} from './map-style.js';
 //import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
-import ReactLogo from './logo.svg';
-import location from './currentcity.png';
+import Location from './location.gif';
 import BusTrackerLogo from './BusTrackerLogo.png';
+import ReactLoading from 'react-loading';
 
 
 /* import Material Icons for the bus icon */
@@ -298,9 +298,10 @@ export default class App extends Component {
       onHover={this.onMouseHover}>
 
       {/* Display the Vancouvers coordinates on a map */}
-      <Marker latitude={49.2827} longitude={-123.1207}>
-      <div> <img src={location}/> </div>
-      </Marker>
+      <Popup latitude={49.2827} longitude={-123.1207}>
+      <div>Downtown</div>
+      <div> <ReactLoading type="balls" color="#56D4EA" /> </div>
+      </Popup>
 
 
       {/* Parse the JSON and get the longitude and latitude and display on the map */}
