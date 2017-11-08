@@ -15,7 +15,7 @@ import {defaultMapStyle, dataLayer} from './map-style.js';
 //import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import ReactLogo from './logo.svg';
 import location from './currentcity.png';
-import TransLinkLogo from './TransLinkLogo.png';
+import BusTrackerLogo from './BusTrackerLogo.png';
 
 
 /* import Material Icons for the bus icon */
@@ -281,8 +281,8 @@ export default class App extends Component {
     return (
       <div>
       <center>
-       <img src={TransLinkLogo}/>
-       <h2>TransLink Connector</h2>
+      <img src={BusTrackerLogo}/>
+      <h2></h2>
       <div>
       {/* React Welcome Alert Popup */}
       <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
@@ -312,9 +312,11 @@ export default class App extends Component {
 
       {this.state.currentBusLocations.map ((busData, index) => (
      <Popup latitude={busData.lat} longitude={busData.lon} closeButton={false} closeOnClick={false} anchor="top">
-    <center> <MaterialIcon icon="directions_bus" size={25} color="#56D4EA"/> </center>
-       <div> {busData.Destination} </div>
-      </Popup>
+     <center> <MaterialIcon icon="directions_bus" size={25} color="#56D4EA"/>
+     <div> {busData.Destination} </div>
+     <div> {busData.Direction} </div>
+     </center>
+     </Popup>
      ))}
 
 
