@@ -123,6 +123,7 @@ export default class App extends Component {
 
 
   showBusData = (busData) => {
+
     this.msg.show(busData.Destination, {
       time: 5000,
       type: 'success',
@@ -224,12 +225,17 @@ export default class App extends Component {
     });
   };
 
-  renderBusPopup(newState, busData) {
-  if (newState == true) {
+  renderBusPopup(busData) {
+   if (isAlive == false) {
+   this.showBusData(busData)
 
-    this.showBusData();
-this
-}}
+ } else {
+   console.log('error')
+
+}
+isAlive = true
+}
+
 
 /*renderBusPopup(newState, busData) {
 if (isAlive == false) {
@@ -274,7 +280,7 @@ if (isAlive == false) {
        {/* ______________________ */}
 
        <Button raised color="primary"
-        onClick={this.getCurrentLocation}>Get Current Location</Button>
+        onClick={this.renderBusPopup}>Get Current Location</Button>
        </Center>
       {/* ______________________ */}
 
@@ -312,7 +318,7 @@ if (isAlive == false) {
 
       {this.renderBusPopup(busData)}
 
-    {  /* {this.showBusData(busData)} */ }
+
 
      <center> <MaterialIcon icon="directions_bus" size={25} color="#56D4EA"/>
      <div>{busData.Destination} </div>
