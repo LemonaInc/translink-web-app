@@ -22,7 +22,6 @@ import AppCSS from './App.css';
 const Spacer = require('react-spacer')
 /* Import React Center */
 import Center from 'react-center';
-import SweetAlert from 'sweetalert-react';
 import renderIf from 'render-if'
 
 
@@ -224,9 +223,6 @@ export default class App extends Component {
   };
 
   renderBusPopup(busData) {
-
-  const {thePop} = this.state;
-
    if (isAlive == false) {
 
    this.showBusData(busData)
@@ -236,13 +232,6 @@ export default class App extends Component {
 isAlive = true
 }
 
-
-/*renderBusPopup(newState, busData) {
-if (isAlive == false) {
-
-  this.showBusData(busData);
-
-}} /*
 
 
   /* Window View Port */
@@ -322,9 +311,6 @@ if (isAlive == false) {
      <center> <MaterialIcon icon="directions_bus" size={25} color="#56D4EA"/>
      <div>{busData.Destination} </div>
      <div> {busData.Direction}</div>
-
-
-
      </center>
      </Popup>
    ))}
