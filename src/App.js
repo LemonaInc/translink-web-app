@@ -22,11 +22,13 @@ import AppCSS from './App.css';
 const Spacer = require('react-spacer')
 /* Import React Center */
 import Center from 'react-center';
+import SweetAlert from 'sweetalert-react';
+import renderIf from 'render-if'
 
 
 
 /* import Material Icons for the bus icon */
-//import MaterialIcon from 'react-google-material-icons'
+/* import MaterialIcon from 'react-google-material-icons' */
 import MaterialIcon, {colorPallet} from 'material-icons-react';
 
 
@@ -44,6 +46,8 @@ var displayCheckAPIAlert = true;
 /* Create a bool for checking the API Connection when a user presses the button */
 var isAPIConnectionActive = null;
 
+var isAlive = false;
+
 var showInfo = false;
 
 /* CORS */
@@ -51,7 +55,6 @@ var showInfo = false;
 
 /* React App Extends Component */
 export default class App extends Component {
-
 
   constructor(props) {
     super(props);
@@ -71,7 +74,9 @@ export default class App extends Component {
       },
       currentBusLocations:[],
       currentBusName: [],
-      popupInfo: null
+      popupInfo: null,
+      newState: [],
+      show: false
     }
   };
 
@@ -117,6 +122,15 @@ export default class App extends Component {
   }
 
 
+  showBusData = (busData) => {
+    this.msg.show(busData.Destination, {
+      time: 5000,
+      type: 'success',
+      icon: <MaterialIcon icon="directions_bus" size={30} color ="#3748AC" />
+    })
+  }
+
+
   /* Create a function to be called when the user checks the connection */
   checkTranslinkAPIConnection() {
     if (isAPIConnectionActive == true) {
@@ -147,7 +161,7 @@ export default class App extends Component {
 
           /* parse the body and get the latitude and longitude */
           this.parseBusJSONData(body);
-          /* console.log('All Bus Details:', body); */
+           console.log('All Bus Details:', body);
 
           /* Show the sucess alert if the data is recived from the Translink */
           /* Set the isAPIConnectionActive to true */
@@ -178,7 +192,7 @@ export default class App extends Component {
 
     /* Show the welcome alert */
     this.showWelcomeAlert();
-    //this.getBusPoints();
+    /* this.getBusPoints(); /*
 
         /* Call the fetchBusLocation function every defined amount of seconds */
     this.timer = setInterval(()=> this.fetchBusLocation(), 1000)
@@ -210,6 +224,21 @@ export default class App extends Component {
     });
   };
 
+  renderBusPopup(newState, busData) {
+  if (newState == true) {
+
+    this.showBusData();
+this
+}}
+
+/*renderBusPopup(newState, busData) {
+if (isAlive == false) {
+
+  this.showBusData(busData);
+
+}} /*
+
+
   /* Window View Port */
   windowViewPort = viewport => this.setState({viewport});
 
@@ -233,7 +262,8 @@ export default class App extends Component {
        {/* React Material Design Buttons */}
        <Center>
 
-       <Button raised color="accent" onClick={this.checkTranslinkAPIConnection}>Check API Connection</Button>
+       <Button raised color="accent"
+       onClick={this.showIntroAlert}>Check API Connection</Button>
        {/* Get the current location when button pressed*/}
        <Spacer width='50px' />
 
@@ -243,12 +273,12 @@ export default class App extends Component {
         </div>
        {/* ______________________ */}
 
-       <Button raised color="primary" onClick={this.getCurrentLocation}>Get Current Location</Button>
+       <Button raised color="primary"
+        onClick={this.getCurrentLocation}>Get Current Location</Button>
        </Center>
       {/* ______________________ */}
 
        <Spacer height='50px' />
-
 
       {/* MapBox Map Integration */}
       <ReactMapboxMapGL
@@ -268,13 +298,31 @@ export default class App extends Component {
       {/* Parse the JSON and get the longitude and latitude and display on the map */}
 
       {this.state.currentBusLocations.map ((busData, index) => (
-     <Popup latitude={busData.lat} longitude={busData.lon} closeButton={false} closeOnClick={false} anchor="top">
+     <Popup latitude={busData.lat}
+      longitude={busData.lon}
+      closeButton={false}
+      closeOnClick={false}
+      anchor="top"
+
+      onClick={() => {
+      var prevState=this.state.newState;
+      prevState[index]=!prevState[index];
+
+      this.setState({newState:prevState})}}>
+
+      {this.renderBusPopup(busData)}
+
+    {  /* {this.showBusData(busData)} */ }
+
      <center> <MaterialIcon icon="directions_bus" size={25} color="#56D4EA"/>
-     <div> {busData.Destination} </div>
-     <div> {busData.Direction} </div>
+     <div>{busData.Destination} </div>
+     <div> {busData.Direction}</div>
+
+
+
      </center>
      </Popup>
-     ))}
+   ))}
 
 
       {/* Load in the react Options Component */}
