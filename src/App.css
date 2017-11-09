@@ -49,13 +49,9 @@ The author's name of this tutorial is Shawn Ramsey. ----------------------------
     position:fixed;
 }
 
-/* Create the pin class */
-
-
-
 /* Create the pin effect class */
 
-.pin-effect {
+.marker-effect {
   width: 20px;
   height: 20px;
   position: relative;

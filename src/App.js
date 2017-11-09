@@ -12,12 +12,15 @@ import Button from 'material-ui/Button';
 import {fromJS} from 'immutable';
 /* Import React MapBox Functions */
 import {defaultMapStyle, dataLayer} from './map-style.js';
-//import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import Location from './location.gif';
+/* Import Logos */
 import BusTrackerLogo from './BusTrackerLogo.png';
 import ReactLoading from 'react-loading';
+/* Import App CSS */
 import AppCSS from './App.css';
+/* Import React Spacers */
 const Spacer = require('react-spacer')
+/* Import React Center */
 import Center from 'react-center';
 
 
@@ -60,7 +63,7 @@ export default class App extends Component {
         latitude: 49.2827,
         longitude: -123.1207,
         /* Set the initial map zoom to 12 to see the vancouver area */
-        zoom: 12,
+        zoom: 15,
         bearing: 0,
         pitch: 0,
         width: 500,
@@ -116,24 +119,16 @@ export default class App extends Component {
 
   /* Create a function to be called when the user checks the connection */
   checkTranslinkAPIConnection() {
-
     if (isAPIConnectionActive == true) {
-
       console.log('Connection is active');
-
-
     } else {
-
       console.log('Connection is not active');
     }
-
   }
 
 
   /* This function fetches the bus location from the translink API and gets the data back in JSON */
   fetchBusLocation() {
-
-
       request({
         /* Pass in the Translink API URL */
         url: TRANSLINK_LIVE_API_URL,
@@ -168,41 +163,13 @@ export default class App extends Component {
 
   }
 
-  /* getBusStates() {
-    fetch('http://api.translink.ca/rttiapi/v1/buses?apiKey=aqkEXwYsmjIr2Ioy0E6v')
-    .then(results => {
-      return results.json();
-    }).then(data => {
-    let details = data.results.map((busdetails) => {
-      <div key={busdetails.results}>
-      </div>
-
-    })
-    this.setState({details: details});
-    console.log('Bus States', this.state.details);
-  })
-
-} */
-
 /* Parse the JSON data and add Longitude, Latitude, Direction and Destination to an array */
   parseBusJSONData(vancouverBusLocation) {
-
     let currentBusLocationArray = vancouverBusLocation.map((theBus) => ({lat: theBus.Latitude, lon: theBus.Longitude, Destination: theBus.Destination, Direction: theBus.Direction}));
     this.setState({currentBusLocations: currentBusLocationArray});
   /*  console.log('Bus Positions',currentBusLocationArray) */
   }
 
-
-  /* Get the currrent location of the user and display the location on a map */
-  getCurrentLocation() {
-
-    {this.state.currentBusLocations.map ((position, index) => (
-      <div> />
-      {position.Destination}
-      </div>
-    ))}
-
-  }
 
   /* The componentDidMount method gets called once the component is mounted to the DOM */
   /* Use Component did Mount for fetching the API data and calling methods when the web app loads */
@@ -213,8 +180,7 @@ export default class App extends Component {
     this.showWelcomeAlert();
     //this.getBusPoints();
 
-    /* this.getBusStates() */
-    /* Call the fetchBusLocation function every defined amount of seconds */
+        /* Call the fetchBusLocation function every defined amount of seconds */
     this.timer = setInterval(()=> this.fetchBusLocation(), 1000)
 
     /* Show the welcome alert */
@@ -224,8 +190,6 @@ export default class App extends Component {
     window.addEventListener('resize', this.windowSize);
     this.windowSize();
   }
-
-
 
   /* The componentWillUnmount method gets called right before the component is unloaded from the DOM */
   /* --------------------------------------- */
@@ -249,36 +213,10 @@ export default class App extends Component {
   /* Window View Port */
   windowViewPort = viewport => this.setState({viewport});
 
-  /* on mouse hover event */
-  onMouseHover = event => {
-
-
-  };
-
-
-
-  putPop() {
-
-    const {putPop} = this.state;
-
-      return putPop && (
-      <Popup tipSize={5}
-        anchor="top"
-        longitude={49.2827}
-        latitude={-123.1207}>
-      </Popup>
-    );
-  }
-
-
-
   /* Everything in the React render function will be rendered to the view */
   render() {
-
     const {viewport, mapStyle} = this.state;
-
     return (
-
       <div>
       <Center>
       <img src={BusTrackerLogo}/>
@@ -290,9 +228,7 @@ export default class App extends Component {
       </Center>
       {/* ______________________ */}
 
-
       <Spacer height='50px' />
-
 
        {/* React Material Design Buttons */}
        <Center>
@@ -303,7 +239,7 @@ export default class App extends Component {
 
        {/* CSS Animating Location Marker*/}
        <div className="marker">
-          <div className="pin-effect"></div>
+          <div className="marker-effect"></div>
         </div>
        {/* ______________________ */}
 
@@ -326,7 +262,6 @@ export default class App extends Component {
       {/* Display the Vancouvers coordinates on a map */}
       <Popup latitude={49.2827} longitude={-123.1207}>
       <div>Downtown</div>
-      <ReactLoading type="balls" color="#56D4EA" />
       </Popup>
 
 
