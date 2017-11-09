@@ -12,7 +12,6 @@ import Button from 'material-ui/Button';
 import {fromJS} from 'immutable';
 /* Import React MapBox Functions */
 import {defaultMapStyle, dataLayer} from './map-style.js';
-import Location from './location.gif';
 /* Import Logos */
 import BusTrackerLogo from './BusTrackerLogo.png';
 import ReactLoading from 'react-loading';
@@ -45,12 +44,11 @@ var displayCheckAPIAlert = true;
 /* Create a bool for checking the API Connection when a user presses the button */
 var isAPIConnectionActive = null;
 
+/* Bools */
 var isAlive = false;
-
 var showInfo = false;
 
 /* CORS */
-
 
 /* React App Extends Component */
 export default class App extends Component {
