@@ -226,12 +226,14 @@ export default class App extends Component {
   };
 
   renderBusPopup(busData) {
+
+  const {thePop} = this.state;
+
    if (isAlive == false) {
+
    this.showBusData(busData)
 
  } else {
-   console.log('error')
-
 }
 isAlive = true
 }
@@ -269,7 +271,7 @@ if (isAlive == false) {
        <Center>
 
        <Button raised color="accent"
-       onClick={this.showIntroAlert}>Check API Connection</Button>
+       onClick={this.showBusData}>Show Bus Data</Button>
        {/* Get the current location when button pressed*/}
        <Spacer width='50px' />
 
@@ -317,7 +319,6 @@ if (isAlive == false) {
       this.setState({newState:prevState})}}>
 
       {this.renderBusPopup(busData)}
-
 
 
      <center> <MaterialIcon icon="directions_bus" size={25} color="#56D4EA"/>
