@@ -60,7 +60,6 @@ export default class App extends Component {
     super(props);
     this.state = {
       mapStyle: defaultMapStyle,
-      hoveredFeature: null,
       viewport: {
         /* Set the latitude and longitude to Vancouver coordinates */
         latitude: 49.2827,
@@ -76,7 +75,6 @@ export default class App extends Component {
       currentBusName: [],
       popupInfo: null,
       newState: [],
-      show: false
     }
   };
 
@@ -271,7 +269,7 @@ if (isAlive == false) {
        <Center>
 
        <Button raised color="accent"
-       onClick={this.showBusData}>Show Bus Data</Button>
+       onClick={this.showBusData}>Show Bus Data Popup</Button>
        {/* Get the current location when button pressed*/}
        <Spacer width='50px' />
 
