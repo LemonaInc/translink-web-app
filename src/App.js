@@ -256,7 +256,7 @@ isAlive = true
        <Center>
 
        <Button raised color="accent"
-       onClick={this.showBusData}>Show Bus Data Popup</Button>
+       onClick={this.showIntroAlert}>Show Intro View Popup</Button>
        {/* Get the current location when button pressed*/}
        <Spacer width='50px' />
 
