@@ -157,7 +157,7 @@ export default class App extends Component {
 
           /* parse the body and get the latitude and longitude */
           this.parseBusJSONData(body);
-           console.log('All Bus Details:', body);
+           /* console.log('All Bus Details:', body); */
 
           /* Show the sucess alert if the data is recived from the Translink */
           /* Set the isAPIConnectionActive to true */

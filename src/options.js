@@ -8,7 +8,7 @@ export default class Options extends PureComponent {
 
     return (
       <Container>
-       <center>  <h3>Welcome to Translink Connector</h3> </center>
+       <center>  <h3>Welcome to My TransLink Bus Tracker</h3> </center>
       </Container> );
     }
 }
