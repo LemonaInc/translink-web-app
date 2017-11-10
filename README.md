@@ -36,7 +36,7 @@ renderIf 'render-if'
 # Credits
 
 This data for this app to display the buses is from the Vancouver TransLink API.
-TranLink API: https://developer.translink.ca/.
+TransLink API: https://developer.translink.ca/.
 
 The NPM modules used in this app were created by the prospective authors and all credit is to be given to those authors for thier component.
 
